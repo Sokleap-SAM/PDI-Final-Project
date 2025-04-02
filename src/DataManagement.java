@@ -26,7 +26,7 @@ public class DataManagement {
         preparedStat.executeUpdate();
     }
 
-    public static void initialBudget(String username) {
+    public static boolean initialBudget(String username) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS budgets ("
                 + "username TEXT NOT NULL,"
                 + "category TEXT NOT NULL,"
@@ -48,11 +48,13 @@ public class DataManagement {
                 insertBudget(preparedStat, username, "Other_Incomes");
             }
 
-            System.out.println("Budget Database initialized successfully!");
+            return true;
 
         } catch (SQLException e) {
-            System.err.println("Error initializing database: " + e.getMessage());
+            Formatter.formatTextColor("\nError initializing database: " + e.getMessage(), "red");
         }
+
+        return false;
     }
 
     public static void updateBudget(String username, String category, double amount) {
@@ -65,8 +67,9 @@ public class DataManagement {
             updateStat.setString(3, category);
             updateStat.executeUpdate();
 
+            Formatter.formatTextColor("\nUpdate budget successfully!", "green");
         } catch (SQLException e) {
-            System.err.println("Update budget failed: " + e.getMessage());
+            Formatter.formatTextColor("\nUpdate budget failed: " + e.getMessage(), "red");
         }
     }
 
@@ -85,7 +88,7 @@ public class DataManagement {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error fetching budget: " + e.getMessage());
+            Formatter.formatTextColor("\nFetching budgets failed: " + e.getMessage(), "red");
         }
 
         return budgetMap;
@@ -100,9 +103,9 @@ public class DataManagement {
             resetStat.setString(1, username);
             resetStat.executeUpdate();
             
-            System.out.println("Delete all budgets successfully");
+            Formatter.formatTextColor("\nDelete all budgets successfully", "green");
         } catch (SQLException e) {
-            System.err.println("Deleting budgets failed: " + e.getMessage());
+            Formatter.formatTextColor("\nDelete all budgets failed: " + e.getMessage(), "red");
         }
     }
 
@@ -112,7 +115,7 @@ public class DataManagement {
         preparedStat.executeUpdate();
     }
 
-    public static void initialExpense(String username) {
+    public static boolean initialExpense(String username) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS expenses ("
                 + "username TEXT NOT NULL,"
                 + "category TEXT NOT NULL,"
@@ -137,10 +140,12 @@ public class DataManagement {
                 insertExpense(preparedStat, username, "Shopping");
                 insertExpense(preparedStat, username, "Other_Expenses");
             }
+            return true;
 
         } catch (SQLException e) {
-            System.err.println("Initializing database failed: " + e.getMessage());
+            Formatter.formatTextColor("\nInitializing database failed: " + e.getMessage(), "red");
         }
+        return false;
     }
 
     public static void updateExpense(String username, String category, double amount) {
@@ -153,8 +158,9 @@ public class DataManagement {
             updateStat.setString(3, category);
             updateStat.executeUpdate();
 
+            Formatter.formatTextColor("Update expense successfully!", "green");
         } catch (SQLException e) {
-            System.err.println("Update expense failed: " + e.getMessage());
+            Formatter.formatTextColor("\nUpdate expense failed: " + e.getMessage(), "red");
         }
     }
 
@@ -173,7 +179,7 @@ public class DataManagement {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error fetching expenses: " + e.getMessage());
+            Formatter.formatTextColor("\nFetching expense failed: " + e.getMessage(), "red");
         }
 
         return expenses;
@@ -188,22 +194,24 @@ public class DataManagement {
             resetStat.setString(1, username);
             resetStat.executeUpdate();
             
-            System.out.println("Successfully delete expenses");
+            Formatter.formatTextColor("\nDelete all expenses successfully!", "green");
         } catch (SQLException e) {
-            System.err.println("Error resetting expenses: " + e.getMessage());
+            Formatter.formatTextColor("\nDelete all expensese failed: " + e.getMessage(), "red");
         }
     }
 
 
 
-    public static void addUserDetail(String username, String password){
+    public static boolean addUserDetail(String username, String password){
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(FILEPATH, true));
             bw.write(username + ":" + password + "\n");
             bw.close();
+            return true;
         } catch (IOException e) {
-            System.err.println("Store user's data failed: " + e.getMessage());
+            Formatter.formatTextColor("\nStore user's data failed: " + e.getMessage(), "red");
         }
+        return false;
     }
 
     public static Map<String, User> getUserDetail(){
@@ -219,11 +227,10 @@ public class DataManagement {
                 }
                 br.close();
             } catch (IOException e) {
-                System.err.println("Get user's data failed " + e.getMessage());
+                Formatter.formatTextColor("\nGet user's data failed: " + e.getMessage(), "red");
             }
             return user;
         }
-        System.out.println("No user exist yet");
         return user;
     }
 

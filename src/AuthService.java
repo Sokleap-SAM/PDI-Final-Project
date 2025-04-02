@@ -7,27 +7,29 @@ import java.util.Map;
 
 public class AuthService {
     private Map <String, User> users = new HashMap<>();
+
     AuthService(){
         users = DataManagement.getUserDetail();
     }
     
     public boolean register(String name, String password, String confirmPassword){
         if(!password.equals(confirmPassword)){
-            System.out.println("Password and Confirm password isn't the same! ");
+            Formatter.formatTextColor("Password and Confirm password isn't the same!", "yellow");
             return false;
         }
         else{
             if(users.containsKey(name)){
-                System.out.println("User already exist!");
+                Formatter.formatTextColor("User already exist!", "yellow"); 
                 return false;
             }
             users.put(name, new User(name, password));
             String hashName = hashSHA256(name);
             String hashPassword = hashSHA256(password);
-            DataManagement.addUserDetail(hashName, hashPassword);
-            DataManagement.initialBudget(name);
-            DataManagement.initialExpense(name);
-            return true;
+            if(DataManagement.addUserDetail(hashName, hashPassword) && DataManagement.initialBudget(name) && DataManagement.initialExpense(name)){
+                DataManagement.addUserDetail(hashName, hashPassword);
+                return true;
+            }
+            return false;
         }
     }
 
@@ -35,13 +37,12 @@ public class AuthService {
         String hashName = hashSHA256(name);
         String hashPassword = hashSHA256(password);
         if(!users.containsKey(hashName)){
-            System.out.println("Invalid username!");
+            Formatter.formatTextColor("Incorrect username!", "yellow"); 
             return false;
         }
         else{
             if(!users.get(hashName).getPassword().equals(hashPassword)){
-                System.out.println(users.get(hashName).getPassword());
-                System.out.println("Invalid password!");
+                Formatter.formatTextColor("Incorrect password!", "yellow"); 
                 return false;
             }
             return true;
@@ -54,7 +55,7 @@ public class AuthService {
             byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("Error: SHA-256 algorithm not found.");
+            Formatter.formatTextColor("Error: encryption failed!", "red");
             return null;
         }
     }

@@ -27,7 +27,7 @@ public class Expense {
     public void displayExpenses(){
         DecimalFormat df = new DecimalFormat("0.00");
         double total = 0;
-        System.out.println("\u001B[34m"+
+        System.out.println("\n\n\u001B[34m"+
                            "╔════════════════════════════════════════════════════╗\n" +
                            "║     expense Category        ║      Amount          ║\n" +
                            "╠════════════════════════════════════════════════════╣");

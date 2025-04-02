@@ -54,7 +54,7 @@ public class TextContentHandler {
     }
 
     public static void displayStartedMenu(String color){
-        text =  "╔══════════════════════════════════════╗\n" +
+        text =  "\n╔══════════════════════════════════════╗\n" +
                 "║            Started Menu              ║\n" +
                 "╠══════════════════════════════════════╣\n" +
                 "║ 1.  Register                         ║\n" +
@@ -145,6 +145,29 @@ public class TextContentHandler {
                 "║ 8.  Other_Expenses                   ║\n" +
                 "╚══════════════════════════════════════╝\n";
         Formatter.formatTextColor(text, color);
+    }
+
+    public static void displayLoading(String text){
+        Formatter.formatTextColor("\n\n\n" + text + "\n\n", "yellow");
+            for (int i = 0; i < 20; i++) {
+                System.out.print("########## ");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } 
+            }
+        System.out.println("\033c");
+    }
+
+    public static void exitSoonText(int second){
+        Formatter.formatTextColor("\n\n\nExiting in "+ second + "\n", "yellow");
+                try {
+                    Thread.sleep(second*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } 
+        System.out.println("\033c");
     }
 
 }

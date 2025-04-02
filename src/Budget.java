@@ -27,7 +27,7 @@ public class Budget {
     public void displayBudgets(){
         DecimalFormat df = new DecimalFormat("0.00");
         double total = 0;
-        System.out.println("\u001B[34m"+
+        System.out.println("\n\n\n\u001B[34m"+
                            "╔════════════════════════════════════════════════════╗\n" +
                            "║     Budget Category         ║      Amount          ║\n" +
                            "╠════════════════════════════════════════════════════╣");

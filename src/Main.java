@@ -96,10 +96,10 @@ public class Main {
                 if (value >= 0) {
                     return value;
                 } else {
-                    System.out.println("Input must be a non-negative integer. Please try again.");
+                    Formatter.formatTextColor("Input must be a non-negative integer. Please try again.", "yellow");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a integer.");
+                Formatter.formatTextColor("Invalid input. Please enter a integer!", "yellow");
                 input.nextLine(); 
             }
         }
@@ -112,10 +112,10 @@ public class Main {
                 if (value >= 0) {
                     return value;
                 } else {
-                    System.out.println("Input must be a non-negative number. Please try again.");
+                    Formatter.formatTextColor("Input must be a non-negative number. Please try again.", "yellow");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                Formatter.formatTextColor("Invalid input. Please enter a number!", "yellow");
                 input.nextLine(); 
             }
         }
@@ -125,13 +125,15 @@ public class Main {
         AuthService userAuth = new AuthService();
         BudgetService budgetService;
         ExpenseService expenseService;
+        TextContentHandler.displayWelcomeText("pink");
+        TextContentHandler.displayLoading("Loading to register/login page");
         while (true) {
-            TextContentHandler.displayWelcomeText("pink");
             TextContentHandler.displayStartedMenu("blue");
             System.out.print("Option: ");
             int option = getIntInput();
             input.nextLine();
             if (option == 1) {
+                TextContentHandler.displayLoading("Loading to register page");
                 TextContentHandler.displayRegister("pink");
                 System.out.print("Enter name: ");
                 String name = input.nextLine();
@@ -145,6 +147,7 @@ public class Main {
                     Formatter.formatTextColor("Register failed", "red");
                 }
             } else if (option == 2) {
+                TextContentHandler.displayLoading("Loading to login page");
                 TextContentHandler.displayLogin("pink");
                 System.out.print("Enter name: ");
                 String name = input.nextLine();
@@ -159,6 +162,7 @@ public class Main {
                     int choice = 0;
                     String category;
                     double amount;
+                    TextContentHandler.displayLoading("Home page");
                     while (choice != 10) {
                         TextContentHandler.displayFeatureMenu("blue");
                         System.out.print("Choice: ");
@@ -166,6 +170,7 @@ public class Main {
                         input.nextLine();
                         switch (choice) {
                             case 1:
+                                TextContentHandler.displayLoading("Loading to add budget page");
                                 category = budgetCategory();
                                 System.out.print("Add amount: ");
                                 amount = getDoubleInput();
@@ -173,6 +178,7 @@ public class Main {
                                 budgetService.addBudget(category, amount);
                                 break;
                             case 2:
+                            TextContentHandler.displayLoading("Loading to edit budget page");
                                 category = budgetCategory();
                                 System.out.print("New budget amount: ");
                                 amount = getDoubleInput();
@@ -180,9 +186,11 @@ public class Main {
                                 budgetService.editBudget(category, amount);
                                 break;
                             case 3:
+                                TextContentHandler.displayLoading("Deleting all budgets");
                                 budgetService.deleteAllBudgets();
                                 break;
                             case 4:
+                                TextContentHandler.displayLoading("Loading to add expense page");
                                 category = expenseCategory();
                                 System.out.print("Add expense amount: ");
                                 amount = getDoubleInput();
@@ -190,6 +198,7 @@ public class Main {
                                 expenseService.addExpense(category, amount);
                                 break;
                             case 5:
+                                TextContentHandler.displayLoading("Loading to edit expense page");
                                 category = expenseCategory();
                                 System.out.print("New Expense amount: ");
                                 amount = getDoubleInput();
@@ -197,32 +206,42 @@ public class Main {
                                 expenseService.editExpense(category, amount);
                                 break;
                             case 6:
+                                TextContentHandler.displayLoading("Deleting all expenses");
                                 expenseService.deleteAllExpenses();
                                 break;
                             case 7:
+                                TextContentHandler.displayLoading("Loading to budget report");
                                 budgetService.viewBudgetSummary();
                                 break;
                             case 8:
+                                TextContentHandler.displayLoading("Loading to expense report");
                                 expenseService.viewExpenseSummary();
                                 break;
                             case 9:
+                                TextContentHandler.displayLoading("Loading to budget vs expense summary");
                                 budgetService.viewBudgetSummary();
                                 expenseService.viewExpenseSummary();
                                 break;
                             case 10:
+                                TextContentHandler.displayLoading("Logging out");
                                 break;
                             default:
                                 Formatter.formatTextColor("Invalid choice!", "red");
                                 break;
                         }
+                        TextContentHandler.exitSoonText(8);
+                        TextContentHandler.displayLoading("Loading back to homepage");
                     }
                 }
             } else if (option == 3) {
+                System.out.println("\033c");
                 TextContentHandler.displayThankYouText("pink");
                 System.exit(0);
             } else {
                 Formatter.formatTextColor("Invalid option", "red");
             }
+            TextContentHandler.exitSoonText(5);
+            TextContentHandler.displayLoading("Loading back to register/login page");
         }
     }
 }
