@@ -14,17 +14,17 @@ public class AuthService {
     
     public boolean register(String name, String password, String confirmPassword){
         if(!password.equals(confirmPassword)){
-            Formatter.formatTextColor("Password and Confirm password isn't the same!", "yellow");
+            Formatter.formatTextColor("Register failed: Password and Confirm password isn't the same!", "yellow");
             return false;
         }
         else{
             if(users.containsKey(name)){
-                Formatter.formatTextColor("User already exist!", "yellow"); 
+                Formatter.formatTextColor("Register failed: User already exist!", "yellow"); 
                 return false;
             }
-            users.put(name, new User(name, password));
             String hashName = hashSHA256(name);
             String hashPassword = hashSHA256(password);
+            users.put(hashName, new User(hashName, hashPassword));
             if(DataManagement.addUserDetail(hashName, hashPassword) && DataManagement.initialBudget(name) && DataManagement.initialExpense(name)){
                 DataManagement.addUserDetail(hashName, hashPassword);
                 return true;
@@ -37,12 +37,12 @@ public class AuthService {
         String hashName = hashSHA256(name);
         String hashPassword = hashSHA256(password);
         if(!users.containsKey(hashName)){
-            Formatter.formatTextColor("Incorrect username!", "yellow"); 
+            Formatter.formatTextColor("Login failed: Incorrect username!", "yellow"); 
             return false;
         }
         else{
             if(!users.get(hashName).getPassword().equals(hashPassword)){
-                Formatter.formatTextColor("Incorrect password!", "yellow"); 
+                Formatter.formatTextColor("Login failed: Incorrect password!", "yellow"); 
                 return false;
             }
             return true;
